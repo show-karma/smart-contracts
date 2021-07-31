@@ -1,44 +1,41 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.2;
 import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
+import "./NFTMinter.sol";
 
-contract NFTMinterFactory is Ownable {
-  using Counters for Counters.Counter;
-  Counters.Counter private _contractIds;
-  mapping(uint256 => mapping(address => address)) contractIdOwner;
-  event NewNFTContract(uint256 _contractId, address _contract, address _owner);
+contract NFTMinterFactory is Initializable, OwnableUpgradeable {
+  mapping(address => mapping(string => address)) public contractOwner;
+  event NewNFTContract(address _contract, address _owner, string _name, string _symbol);
 
-  function deployMinter(address _owner, string memory _name, string memory _symbol) public {
-    NFTMinter minterContract = new NFTMinter(_name, _symbol);
-    uint256 newContractId = _contractIds.current();
-    contractIdOwner[newContractId][_owner] = address(minterContract);
-    minterContract.transferOwnership(msg.sender);
-    emit NewNFTContract(newContractId, address(minterContract), _owner);
-    console.log(newContractId);
-    console.log(_owner);
-    console.log(address(minterContract));
+  function initialize() public initializer {
+    __Ownable_init();
+  }
+
+  function deployMinter(address _owner, string memory _name, string memory _symbol) onlyOwner public returns (address) {
+    require(contractOwner[_owner][_symbol] == address(0));
+    address minterImplAddress = address(new NFTMinter());
+    TransparentUpgradeableProxy minterContract = new TransparentUpgradeableProxy(
+        minterImplAddress,
+        msg.sender,
+        abi.encodeWithSelector(NFTMinter(address(0)).initialize.selector, _name, _symbol)
+    );
+
+    NFTMinter minter = NFTMinter(address(minterContract));
+    minter.transferOwnership(_owner);
+    emit NewNFTContract(address(minterContract), _owner, _name, _symbol);
+    contractOwner[_owner][_symbol] = address(minterContract);
+    //console.log(newContractId);
+    //console.log(_owner);
+    //console.log(address(minterContract));
+    return address(minterContract);
+  }
+
+  function contractAddress(address _owner, string memory _symbol) public view returns (address) {
+    return contractOwner[_owner][_symbol];
   }
 }
 
-contract NFTMinter is ERC721URIStorage, Ownable {
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
-
-    constructor(string memory _name, string memory _symbol) ERC721(_name, _symbol) {}
-
-    function mintToken(address receiver, string memory tokenURI) public onlyOwner
-        returns (uint256)
-    {
-        _tokenIds.increment();
-
-        uint256 newTokenId = _tokenIds.current();
-        _mint(receiver, newTokenId);
-        _setTokenURI(newTokenId, tokenURI);
-
-        return newTokenId;
-    }
-}

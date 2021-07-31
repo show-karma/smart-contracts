@@ -4,12 +4,6 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "_contractId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
         "internalType": "address",
         "name": "_contract",
         "type": "address"
@@ -19,6 +13,18 @@
         "internalType": "address",
         "name": "_owner",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_name",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_symbol",
+        "type": "string"
       }
     ],
     "name": "NewNFTContract",
@@ -52,6 +58,54 @@
       },
       {
         "internalType": "string",
+        "name": "_symbol",
+        "type": "string"
+      }
+    ],
+    "name": "contractAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "contractOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
         "name": "_name",
         "type": "string"
       },
@@ -62,6 +116,19 @@
       }
     ],
     "name": "deployMinter",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "initialize",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

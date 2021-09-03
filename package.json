@@ -1,5 +1,5 @@
 {
-  "name": "nft-api-core-contracts",
+  "name": "skillgraph-contracts",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
     "@nomiclabs/hardhat-waffle": "2.0.1",

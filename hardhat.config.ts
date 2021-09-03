@@ -57,6 +57,17 @@ export default {
       url: `https://kovan.infura.io/v3/${infuraApiKey}`,
       accounts: [privateKey],
       saveDeployments: true
+    },
+    arb_testnet: {
+      url: `https://arb-rinkeby.g.alchemy.com/v2/L4sUzq5YUpIY-D7IA3l230OhO6wFhghm`,
+      accounts: [privateKey],
+      saveDeployments: true
+    },
+    arbitrum: {
+      gasPrice: 120000000,
+      url: `https://arb-mainnet.g.alchemy.com/v2/PiUO5Mmv0Gx2suXU3HN2xKliU2VaRjlf`,
+      accounts: [privateKey],
+      saveDeployments: true
     }
   },
   namedAccounts: {

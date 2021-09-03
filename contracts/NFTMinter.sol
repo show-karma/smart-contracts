@@ -1,16 +1,19 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.2;
-import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract NFTMinter is Initializable, ERC721URIStorageUpgradeable, OwnableUpgradeable {
-    using CountersUpgradeable for CountersUpgradeable.Counter;
-    CountersUpgradeable.Counter private _tokenIds;
+contract NFTMinter is ERC721URIStorage, Ownable {
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
 
-    function initialize(string memory _name, string memory _symbol) public initializer {
-      __ERC721_init(_name, _symbol);
-      __Ownable_init();
+    constructor (string memory _name, string memory _symbol) ERC721(_name, _symbol){}
+
+    function batchMint(address[] memory receivers, string[] memory tokenURIs) public onlyOwner {
+      for(uint i=0; i<tokenURIs.length; i++) {
+        mintToken(receivers[i], tokenURIs[i]);
+      }
     }
 
     function mintToken(address receiver, string memory tokenURI) public onlyOwner
@@ -23,5 +26,13 @@ contract NFTMinter is Initializable, ERC721URIStorageUpgradeable, OwnableUpgrade
         _setTokenURI(newTokenId, tokenURI);
 
         return newTokenId;
+    }
+
+    function _safeTransfer(address from, address to, uint256 tokenId, bytes memory _data) internal override {
+      revert("Token transfer is disabled.");
+    }
+
+    function transferFrom(address from, address to, uint256 tokenId) public override {
+      revert("Token transfer is disabled.");
     }
 }

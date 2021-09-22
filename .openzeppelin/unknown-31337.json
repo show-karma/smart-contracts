@@ -7,7 +7,7 @@
       "hash": "0xa22e0353aca806bcadb1bc1e34dca681299d494689643efc414c2370ac21769b",
       "type": 0,
       "accessList": null,
-      "blockHash": "0x3c4d2f18617904db0328fdb39b3fbaaa080b0fdd15ac0079b17a993891950629",
+      "blockHash": "0xd47f7e2835ca2eb9aa48c43cf565cd0fef7736e5798188fd1889efe7112f7cb2",
       "blockNumber": 2,
       "transactionIndex": 0,
       "confirmations": 1,
@@ -36,20 +36,45 @@
   },
   "proxies": [
     {
+      "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+      "txHash": "0x82293b4ea8c2764ed142bb98e2485a095161865b6d2e1fc08b5789ffa6e78876",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
+      "txHash": "0xe8954103ec49ce6e659831e07a288e078b4e0f4bd3cbd08520629d1c01efd7a4",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
+      "txHash": "0x820a84ee5d1525ac304bf3459b16810f3dad8eca28675a2a99203f983651e9b2",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c",
+      "txHash": "0x85f577f45a24baa51dcf242728d8ba7044082994eb949afbb329a131f9a375fe",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1",
+      "txHash": "0xf10ab5c73c734ff269c308d120cb90536b167d75d615139f33b3b790ad9fdd54",
+      "kind": "transparent"
+    },
+    {
       "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      "txHash": "0x8d804615fdd730294a009a0292f873a92af71775c37586cd207618c848fcde60",
+      "txHash": "0x08de97a14e75f499908fdd0351deb623568f09f9c0fc56197a293935869628a0",
       "kind": "transparent"
     },
     {
       "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-      "txHash": "0x7f09ade297f9e51980c05bbef19286ac7520d78326ce7ff86650a3bbcd81dfcb",
+      "txHash": "0x7474837b412001dd672684e268d08bb3fb8d659e0bb124498d34f21960fe3078",
       "kind": "transparent"
     }
   ],
   "impls": {
-    "7861f8cb713302080e2872ac9d71d11404c892bf63c78aabd9dee0073d7a3c68": {
-      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      "txHash": "0xc32a0453c39edb44c62005aa19a0b314c8085223eb96b8f610c0c980ed9c72d3",
+    "bb606e887e882938f4fc027d6202208b2edf9cbe619348bb56d6729144d9f337": {
+      "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+      "txHash": "0x67361c064ec5bc9e0d462b35ae993cf485af498f9729f107d84e4e74e242ed0a",
       "layout": {
         "storage": [
           {
@@ -91,13 +116,13 @@
           {
             "contract": "NFTMinterFactory",
             "label": "orgInfo",
-            "type": "t_mapping(t_string_memory_ptr,t_struct(Org)2285_storage)",
+            "type": "t_mapping(t_string_memory_ptr,t_struct(Org)2329_storage)",
             "src": "contracts/NFTMinterFactory.sol:27"
           },
           {
             "contract": "NFTMinterFactory",
             "label": "nftContractInfo",
-            "type": "t_mapping(t_string_memory_ptr,t_struct(NFTContract)2294_storage)",
+            "type": "t_mapping(t_string_memory_ptr,t_struct(NFTContract)2338_storage)",
             "src": "contracts/NFTMinterFactory.sol:28"
           }
         ],
@@ -114,13 +139,13 @@
           "t_uint256": {
             "label": "uint256"
           },
-          "t_mapping(t_string_memory_ptr,t_struct(Org)2285_storage)": {
+          "t_mapping(t_string_memory_ptr,t_struct(Org)2329_storage)": {
             "label": "mapping(string => struct NFTMinterFactory.Org)"
           },
           "t_string_storage": {
             "label": "string"
           },
-          "t_struct(Org)2285_storage": {
+          "t_struct(Org)2329_storage": {
             "label": "struct NFTMinterFactory.Org",
             "members": [
               {
@@ -144,10 +169,10 @@
           "t_address": {
             "label": "address"
           },
-          "t_mapping(t_string_memory_ptr,t_struct(NFTContract)2294_storage)": {
+          "t_mapping(t_string_memory_ptr,t_struct(NFTContract)2338_storage)": {
             "label": "mapping(string => struct NFTMinterFactory.NFTContract)"
           },
-          "t_struct(NFTContract)2294_storage": {
+          "t_struct(NFTContract)2338_storage": {
             "label": "struct NFTMinterFactory.NFTContract",
             "members": [
               {
@@ -167,6 +192,565 @@
                 "type": "t_address"
               }
             ]
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "616b184ad8a461ef094fd909f08341ed7e8d31bab02628ba6c391e25ec8a9361": {
+      "address": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+      "txHash": "0x43dd0b9846ef99e4af98d1c2c86cf545b787a4a79bfae7d0d28c9afd8cee1fb5",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "_orgIds",
+            "type": "t_struct(Counter)219_storage",
+            "src": "contracts/NFTMinterFactory.sol:11"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "orgInfo",
+            "type": "t_mapping(t_string_memory_ptr,t_struct(Org)2328_storage)",
+            "src": "contracts/NFTMinterFactory.sol:27"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "nftContractInfo",
+            "type": "t_mapping(t_string_memory_ptr,t_struct(NFTContract)2337_storage)",
+            "src": "contracts/NFTMinterFactory.sol:28"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)219_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_string_memory_ptr,t_struct(Org)2328_storage)": {
+            "label": "mapping(string => struct NFTMinterFactory.Org)"
+          },
+          "t_string_storage": {
+            "label": "string"
+          },
+          "t_struct(Org)2328_storage": {
+            "label": "struct NFTMinterFactory.Org",
+            "members": [
+              {
+                "label": "id",
+                "type": "t_uint256"
+              },
+              {
+                "label": "name",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "metaDataURI",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "issuer",
+                "type": "t_address"
+              }
+            ]
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_string_memory_ptr,t_struct(NFTContract)2337_storage)": {
+            "label": "mapping(string => struct NFTMinterFactory.NFTContract)"
+          },
+          "t_struct(NFTContract)2337_storage": {
+            "label": "struct NFTMinterFactory.NFTContract",
+            "members": [
+              {
+                "label": "orgId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "tokenName",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "tokenSymbol",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "contractAddress",
+                "type": "t_address"
+              }
+            ]
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "f23151eacff3d8f6636281bbb319deb0b68d17f2b783cdb9d6135d7810d191c5": {
+      "address": "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+      "txHash": "0xe4e06bd0b2a0e82f765762ca15bc767faedd7cbc7e2adbd1ac506c00fa569031",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "_orgIds",
+            "type": "t_struct(Counter)219_storage",
+            "src": "contracts/NFTMinterFactory.sol:11"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "orgInfo",
+            "type": "t_mapping(t_string_memory_ptr,t_struct(Org)2328_storage)",
+            "src": "contracts/NFTMinterFactory.sol:27"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "nftContractInfo",
+            "type": "t_mapping(t_string_memory_ptr,t_struct(NFTContract)2337_storage)",
+            "src": "contracts/NFTMinterFactory.sol:28"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "addressOrg",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts/NFTMinterFactory.sol:29"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)219_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_string_memory_ptr,t_struct(Org)2328_storage)": {
+            "label": "mapping(string => struct NFTMinterFactory.Org)"
+          },
+          "t_string_storage": {
+            "label": "string"
+          },
+          "t_struct(Org)2328_storage": {
+            "label": "struct NFTMinterFactory.Org",
+            "members": [
+              {
+                "label": "id",
+                "type": "t_uint256"
+              },
+              {
+                "label": "name",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "metaDataURI",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "issuer",
+                "type": "t_address"
+              }
+            ]
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_string_memory_ptr,t_struct(NFTContract)2337_storage)": {
+            "label": "mapping(string => struct NFTMinterFactory.NFTContract)"
+          },
+          "t_struct(NFTContract)2337_storage": {
+            "label": "struct NFTMinterFactory.NFTContract",
+            "members": [
+              {
+                "label": "orgId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "tokenName",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "tokenSymbol",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "contractAddress",
+                "type": "t_address"
+              }
+            ]
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "d1e189c7375d981686b68bd4b5e9717bbb1e2f680592521b95dc4fef5ee35358": {
+      "address": "0x68B1D87F95878fE05B998F19b66F4baba5De1aed",
+      "txHash": "0x0fc7075bf9305eed97beac8472e87ae82ca2bb2dd970c5d284ccfd88201a31bc",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "_orgIds",
+            "type": "t_struct(Counter)219_storage",
+            "src": "contracts/NFTMinterFactory.sol:11"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "orgInfo",
+            "type": "t_mapping(t_string_memory_ptr,t_struct(Org)2328_storage)",
+            "src": "contracts/NFTMinterFactory.sol:27"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "nftContractInfo",
+            "type": "t_mapping(t_string_memory_ptr,t_struct(NFTContract)2337_storage)",
+            "src": "contracts/NFTMinterFactory.sol:28"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "addressOrg",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts/NFTMinterFactory.sol:29"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)219_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_string_memory_ptr,t_struct(Org)2328_storage)": {
+            "label": "mapping(string => struct NFTMinterFactory.Org)"
+          },
+          "t_string_storage": {
+            "label": "string"
+          },
+          "t_struct(Org)2328_storage": {
+            "label": "struct NFTMinterFactory.Org",
+            "members": [
+              {
+                "label": "id",
+                "type": "t_uint256"
+              },
+              {
+                "label": "name",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "metaDataURI",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "issuer",
+                "type": "t_address"
+              }
+            ]
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_string_memory_ptr,t_struct(NFTContract)2337_storage)": {
+            "label": "mapping(string => struct NFTMinterFactory.NFTContract)"
+          },
+          "t_struct(NFTContract)2337_storage": {
+            "label": "struct NFTMinterFactory.NFTContract",
+            "members": [
+              {
+                "label": "orgId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "tokenName",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "tokenSymbol",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "contractAddress",
+                "type": "t_address"
+              }
+            ]
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "d24c9b4525d0907d875db70a6d8461c0b9dd77fceb3b3b3ba18df5b9f85ac763": {
+      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      "txHash": "0x74155c67d1b3937638b40e679a140f5ad682bfd6cdf6eb0712b1c5e9f6660bf6",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "_orgIds",
+            "type": "t_struct(Counter)219_storage",
+            "src": "contracts/NFTMinterFactory.sol:11"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "orgInfo",
+            "type": "t_mapping(t_string_memory_ptr,t_struct(Org)2328_storage)",
+            "src": "contracts/NFTMinterFactory.sol:27"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "nftContractInfo",
+            "type": "t_mapping(t_string_memory_ptr,t_struct(NFTContract)2337_storage)",
+            "src": "contracts/NFTMinterFactory.sol:28"
+          },
+          {
+            "contract": "NFTMinterFactory",
+            "label": "addressOrg",
+            "type": "t_mapping(t_address,t_string_storage)",
+            "src": "contracts/NFTMinterFactory.sol:29"
+          }
+        ],
+        "types": {
+          "t_struct(Counter)219_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_string_memory_ptr,t_struct(Org)2328_storage)": {
+            "label": "mapping(string => struct NFTMinterFactory.Org)"
+          },
+          "t_string_storage": {
+            "label": "string"
+          },
+          "t_struct(Org)2328_storage": {
+            "label": "struct NFTMinterFactory.Org",
+            "members": [
+              {
+                "label": "id",
+                "type": "t_uint256"
+              },
+              {
+                "label": "name",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "metaDataURI",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "issuer",
+                "type": "t_address"
+              }
+            ]
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_string_memory_ptr,t_struct(NFTContract)2337_storage)": {
+            "label": "mapping(string => struct NFTMinterFactory.NFTContract)"
+          },
+          "t_struct(NFTContract)2337_storage": {
+            "label": "struct NFTMinterFactory.NFTContract",
+            "members": [
+              {
+                "label": "orgId",
+                "type": "t_uint256"
+              },
+              {
+                "label": "tokenName",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "tokenSymbol",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "contractAddress",
+                "type": "t_address"
+              }
+            ]
+          },
+          "t_mapping(t_address,t_string_storage)": {
+            "label": "mapping(address => string)"
           },
           "t_array(t_uint256)49_storage": {
             "label": "uint256[49]"

@@ -1,6 +1,7 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.2;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -34,5 +35,9 @@ contract NFTMinter is ERC721URIStorage, Ownable {
 
     function transferFrom(address from, address to, uint256 tokenId) public override {
       revert("Token transfer is disabled.");
+    }
+
+    function burn(uint256 tokenId) public {
+      super._burn(tokenId);
     }
 }

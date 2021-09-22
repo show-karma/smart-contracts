@@ -68,7 +68,18 @@ export default {
       url: `https://arb-mainnet.g.alchemy.com/v2/PiUO5Mmv0Gx2suXU3HN2xKliU2VaRjlf`,
       accounts: [privateKey],
       saveDeployments: true
+    },
+    polygon_mumbai: {
+      url: `https://polygon-mumbai.g.alchemy.com/v2/u5NVwv-g9yoWK2pGpOvlSmbUH9AEkH_e`,
+      accounts: [privateKey],
+      saveDeployments: true
+    },
+    polygon: {
+      url: `https://polygon-mainnet.g.alchemy.com/v2/r9n4TSj6T3p7YuwgbvcBYXGPXme0DreC`,
+      accounts: [privateKey],
+      saveDeployments: true
     }
+
   },
   namedAccounts: {
     deployer: {

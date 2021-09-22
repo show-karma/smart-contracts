@@ -26,6 +26,7 @@ contract NFTMinterFactory is Initializable, OwnableUpgradeable {
 
   mapping(string => Org) public orgInfo;
   mapping(string => NFTContract) public nftContractInfo;
+  mapping(address => string) public addressOrg;
   event NewNFTContract(address _contract, string _name, string _symbol);
   event NewOrgRegistration(uint256 id, string _name, string _metaDataURI, address _owner);
 
@@ -40,6 +41,7 @@ contract NFTMinterFactory is Initializable, OwnableUpgradeable {
       _orgIds.increment();
       orgId = _orgIds.current();
       orgInfo[_orgName] = Org(orgId, _orgName, _metaDataURI, _orgOwner);
+      addressOrg[_orgOwner] = _orgName;
       emit NewOrgRegistration(orgId, _orgName, _metaDataURI, _orgOwner);
     }
 

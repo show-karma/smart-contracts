@@ -38,6 +38,12 @@ contract NFTMinter is ERC721URIStorage, Ownable {
     }
 
     function burn(uint256 tokenId) public {
+      //XXX Operator can burn for upto X (customizable) days after minting
+      require(msg.sender == ownerOf(tokenId));
       super._burn(tokenId);
+    }
+
+    function _baseURI() internal pure virtual override returns (string memory) {
+      return "https://gateway.pinata.cloud/ipfs/";
     }
 }

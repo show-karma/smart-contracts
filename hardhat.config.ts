@@ -5,6 +5,7 @@ import 'solidity-coverage';
 import "hardhat-watcher";
 import 'hardhat-abi-exporter';
 import { task } from "hardhat/config";
+import { getImplementationAddress } from '@openzeppelin/upgrades-core';
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -22,6 +23,12 @@ task("latest_block", "Prints the latest block number", async(args, hre) => {
     console.log("Current block number: " + blockNumber);
   });
 });
+
+task("impl_address", "Prints the implementation address", async(args, hre) => {
+  const currentImplAddress = await getImplementationAddress(hre.ethers.provider, '0x1E06A5F27f3b23Eb1AF450193fADef21A0D35207');
+  console.log("Current impl address: " + currentImplAddress);
+});
+
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
@@ -72,13 +79,22 @@ export default {
     polygon_mumbai: {
       url: `https://polygon-mumbai.g.alchemy.com/v2/u5NVwv-g9yoWK2pGpOvlSmbUH9AEkH_e`,
       accounts: [privateKey],
+      gasPrice: 1000000000,
       saveDeployments: true
     },
     polygon: {
       url: `https://polygon-mainnet.g.alchemy.com/v2/r9n4TSj6T3p7YuwgbvcBYXGPXme0DreC`,
+      gasPrice: 30000000000,
+      accounts: [privateKey],
+      saveDeployments: true
+    },
+    xdai: {
+      url: `https://dai.poa.network/`,
+      gasPrice: 30000000000,
       accounts: [privateKey],
       saveDeployments: true
     }
+
 
   },
   namedAccounts: {

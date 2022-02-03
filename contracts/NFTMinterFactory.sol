@@ -46,7 +46,6 @@ contract NFTMinterFactory is Initializable, OwnableUpgradeable {
       emit NewOrgRegistration(orgId, _orgName, _metaDataHash, _orgOwner);
     }
 
-    //XXX TODO Make org name and _name
     require(nftContractInfo[_symbol].contractAddress == address(0), "symbol already exists");
     NFTMinter minter = new NFTMinter(_name, _symbol);
     minter.transferOwnership(_orgOwner);
@@ -57,4 +56,3 @@ contract NFTMinterFactory is Initializable, OwnableUpgradeable {
     return address(minter);
   }
 }
-

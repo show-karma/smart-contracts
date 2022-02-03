@@ -79,7 +79,7 @@ export default {
     polygon_mumbai: {
       url: `https://polygon-mumbai.g.alchemy.com/v2/u5NVwv-g9yoWK2pGpOvlSmbUH9AEkH_e`,
       accounts: [privateKey],
-      gasPrice: 1000000000,
+      gasPrice: 30000000000,
       saveDeployments: true
     },
     polygon: {

@@ -29,16 +29,7 @@ contract NFTMinter is ERC721URIStorage, Ownable {
         return newTokenId;
     }
 
-    function _safeTransfer(address from, address to, uint256 tokenId, bytes memory _data) internal override {
-      revert("Token transfer is disabled.");
-    }
-
-    function transferFrom(address from, address to, uint256 tokenId) public override {
-      revert("Token transfer is disabled.");
-    }
-
     function burn(uint256 tokenId) public {
-      //XXX Operator can burn for upto X (customizable) days after minting
       require(msg.sender == ownerOf(tokenId));
       super._burn(tokenId);
     }

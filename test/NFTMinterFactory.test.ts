@@ -23,15 +23,22 @@ describe("NFT Minter Factory", function () {
     await nftMinterFactory.deployed();
   });
 
+  describe("Register Organization", function() {
+    it("Should successfully register org", async function() {
+      await nftMinterFactory.registerOrg("Zastrin", "metadatahash", addr1);
+      expect(await minter.owner()).to.equal(addr1.address);
+    }
+  });
+
   describe("Deploy Minter", function() {
     it("Should deploy minter contract", async function() {
-      await nftMinterFactory.deployMinter(addr1.address, "Zastrin Courses", "ZSTR");
+      await nftMinterFactory.deployMinter("Zastrin Courses", "ZSTR");
       const address = await nftMinterFactory.contractAddress(addr1.address, "ZSTR");
       const NFTMinter = await ethers.getContractFactory("NFTMinter");
       const minter = (await NFTMinter.attach(address)).connect(addr1);
-      expect(await minter.owner()).to.equal(addr1.address); 
-      expect(await minter.name()).to.equal("Zastrin Courses"); 
-      expect(await minter.symbol()).to.equal("ZSTR"); 
+      expect(await minter.owner()).to.equal(addr1.address);
+      expect(await minter.name()).to.equal("Zastrin Courses");
+      expect(await minter.symbol()).to.equal("ZSTR");
     });
   });
 });

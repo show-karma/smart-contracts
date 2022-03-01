@@ -18,16 +18,16 @@ contract NFTMinterFactory is Initializable, OwnableUpgradeable {
   }
 
   struct NFTContract {
-    uint256 orgId;
     string tokenName;
     string tokenSymbol;
     address contractAddress;
   }
 
-  mapping(string => Org) public orgInfo;
+  mapping(address => Org) public orgInfo;
   mapping(string => NFTContract) public nftContractInfo;
-  mapping(uint256 => address) public orgContract;
-  mapping(address => string) public addressOrg;
+  mapping(uint256 => address) public orgToId;
+  mapping(address => string[]) public orgContracts;
+
   event NewNFTContract(address _contract, string _name, string _symbol);
   event NewOrgRegistration(uint256 id, string _name, string _metaDataHash, address _owner);
 
@@ -35,24 +35,32 @@ contract NFTMinterFactory is Initializable, OwnableUpgradeable {
     __Ownable_init();
   }
 
-  function deployMinter(string memory _orgName, string memory _metaDataHash, address _orgOwner,
-                        string memory _name, string memory _symbol) onlyOwner public returns (address) {
+  function registerOrg(string memory _orgName, string memory _metaDataHash, address _orgOwner)
+                      onlyOwner public {
     uint orgId;
-    if(orgInfo[_orgName].id == 0) {
+    if(orgInfo[_orgOwner].id == 0) {
       _orgIds.increment();
       orgId = _orgIds.current();
-      orgInfo[_orgName] = Org(orgId, _orgName, _metaDataHash, _orgOwner);
-      addressOrg[_orgOwner] = _orgName;
+      orgInfo[_orgOwner] = Org(orgId, _orgName, _metaDataHash, _orgOwner);
+      orgToId[orgId] = _orgOwner;
       emit NewOrgRegistration(orgId, _orgName, _metaDataHash, _orgOwner);
     }
+  }
 
+  function deployMinter(string memory _name, string memory _symbol) public returns (address) {
+    require(orgInfo[msg.sender].issuer != address(0), "Organization hasn't been registered");
     require(nftContractInfo[_symbol].contractAddress == address(0), "symbol already exists");
+
     NFTMinter minter = new NFTMinter(_name, _symbol);
-    minter.transferOwnership(_orgOwner);
-    nftContractInfo[_symbol] = NFTContract(orgId, _name, _symbol, address(minter));
-    orgContract[orgId] = address(minter);
+    nftContractInfo[_symbol] = NFTContract(_name, _symbol, address(minter));
+    orgContracts[msg.sender].push(_symbol);
+    minter.transferOwnership(msg.sender);
     emit NewNFTContract(address(minter), _name, _symbol);
     console.log(address(minter));
     return address(minter);
+  }
+
+  function orgTokens(address _issuer) public view returns (string[] memory) {
+    return orgContracts[_issuer];
   }
 }

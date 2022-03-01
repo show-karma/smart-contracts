@@ -77,40 +77,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "addressOrg",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_orgName",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_metaDataHash",
-        "type": "string"
-      },
-      {
-        "internalType": "address",
-        "name": "_orgOwner",
-        "type": "address"
-      },
-      {
         "internalType": "string",
         "name": "_name",
         "type": "string"
@@ -150,11 +116,6 @@
     "name": "nftContractInfo",
     "outputs": [
       {
-        "internalType": "uint256",
-        "name": "orgId",
-        "type": "uint256"
-      },
-      {
         "internalType": "string",
         "name": "tokenName",
         "type": "string"
@@ -176,17 +137,22 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
     ],
-    "name": "orgContract",
+    "name": "orgContracts",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "string",
         "name": "",
-        "type": "address"
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -195,9 +161,9 @@
   {
     "inputs": [
       {
-        "internalType": "string",
+        "internalType": "address",
         "name": "",
-        "type": "string"
+        "type": "address"
       }
     ],
     "name": "orgInfo",
@@ -227,6 +193,44 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "orgToId",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_issuer",
+        "type": "address"
+      }
+    ],
+    "name": "orgTokens",
+    "outputs": [
+      {
+        "internalType": "string[]",
+        "name": "",
+        "type": "string[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -237,6 +241,29 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_orgName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_metaDataHash",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "_orgOwner",
+        "type": "address"
+      }
+    ],
+    "name": "registerOrg",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

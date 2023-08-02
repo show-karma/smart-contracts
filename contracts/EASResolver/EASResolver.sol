@@ -48,7 +48,7 @@ contract RecipientResolver is SchemaResolver {
     /**
      * This is an bottom up event, called from the attest contract
      */
-    function onRevoke(Attestation calldata /*attestation*/, uint256 /*value*/) internal pure override returns (bool) {
-        return true;
+    function onRevoke(Attestation calldata attestation, uint256 /*value*/) internal pure override returns (bool) {
+        return canAttest(attestation.attester);
     }
 }

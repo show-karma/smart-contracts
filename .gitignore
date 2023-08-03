@@ -3,3 +3,5 @@
 node_modules
 artifacts
 cache
+hardhat.config.ts
+secrets.json

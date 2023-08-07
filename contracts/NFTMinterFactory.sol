@@ -63,4 +63,9 @@ contract NFTMinterFactory is Initializable, OwnableUpgradeable {
   function orgTokens(address _issuer) public view returns (string[] memory) {
     return orgContracts[_issuer];
   }
+
+  function setOrgContracts(string memory _name, string memory _symbol, address _contract, address _owner) onlyOwner public {
+    nftContractInfo[_symbol] = NFTContract(_name, _symbol, _contract);
+    orgContracts[_owner].push(_symbol);
+  }
 }

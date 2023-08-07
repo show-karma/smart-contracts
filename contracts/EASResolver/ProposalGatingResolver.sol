@@ -32,7 +32,7 @@ contract ProposalGatingResolver is SchemaResolver {
         address tokenAddress,
         uint24 tokenChainId
     ) public view returns (bool) {
-        return proposalCreators[tokenAddress][tokenChainId][attester] == 1 || attester == _owner;
+        return daoAdmins[tokenAddress][tokenChainId][attester] == 1 || attester == _owner;
     }
 
     function enlist(
@@ -48,7 +48,7 @@ contract ProposalGatingResolver is SchemaResolver {
     function delist(
         address addr,
         address tokenAddress,
-        uint24 chainId
+        uint24 tokenChainId
     ) public {
         // Admin can attest and also remove other admins
         require(canAttest(msg.sender, tokenAddress, tokenChainId), "Not admin");

@@ -1,0 +1,36 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "major",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minor",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "patch",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "version",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

@@ -5,3 +5,4 @@ artifacts
 cache
 hardhat.config.ts
 secrets.json
+deployments/localhost/**

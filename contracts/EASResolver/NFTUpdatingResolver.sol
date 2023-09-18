@@ -5,7 +5,7 @@ pragma solidity 0.8.19;
 import {SchemaResolver} from "@ethereum-attestation-service/eas-contracts/contracts/resolver/SchemaResolver.sol";
 import {IEAS} from "@ethereum-attestation-service/eas-contracts/contracts/IEAS.sol";
 import {Attestation} from "@ethereum-attestation-service/eas-contracts/contracts/Common.sol";
-import "contracts/Resolvers/GithubLinkingResolver.sol";
+import "./GithubLinkingResolver.sol";
 
 // errors
 error NotOwner();

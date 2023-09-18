@@ -2,8 +2,8 @@
 pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "base64-sol/base64.sol";
-import "contracts/Resolvers/NFTUpdatingResolver.sol";
-import "contracts/Resolvers/GithubLinkingResolver.sol";
+import "./EASResolver/NFTUpdatingResolver.sol";
+import "./EASResolver/GithubLinkingResolver.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract DynamicNFT is ERC721URIStorage {

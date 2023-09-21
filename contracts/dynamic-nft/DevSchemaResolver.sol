@@ -5,20 +5,17 @@ pragma solidity 0.8.19;
 import {SchemaResolver} from "@ethereum-attestation-service/eas-contracts/contracts/resolver/SchemaResolver.sol";
 import {IEAS} from "@ethereum-attestation-service/eas-contracts/contracts/IEAS.sol";
 import {Attestation} from "@ethereum-attestation-service/eas-contracts/contracts/Common.sol";
-import "./GithubLinkingResolver.sol";
 
 // errors
 error NotOwner();
 
-contract NFTUpdatingResolver is SchemaResolver {
-    // repoName => githubUsername = 1
-    mapping(string => mapping(string => uint256)) public _prCount;
-    GithubLinkResolver public _githubResolver;
+contract DevSchemaResolver is SchemaResolver {
+    // username => repoName = attestation ids
+    mapping(string => mapping(string => bytes32[])) public devAttestations;
     address public _owner;
 
-    constructor(IEAS eas, address payable githubResolver) SchemaResolver(eas) {
+    constructor(IEAS eas) SchemaResolver(eas) {
         _owner = msg.sender;
-        _githubResolver = GithubLinkResolver(githubResolver);
     }
 
     /**
@@ -42,7 +39,7 @@ contract NFTUpdatingResolver is SchemaResolver {
         uint256 /*value*/
     ) internal override returns (bool) {
         (string memory username, string memory repository, uint256 pullRequestCount) = decode(attestation.data);
-        _prCount[repository][username] = pullRequestCount;
+        devAttestations[username][repository].push(attestation.uid);
         return true;
     }
 
@@ -54,17 +51,19 @@ contract NFTUpdatingResolver is SchemaResolver {
         uint256 /*value*/
     ) internal override returns (bool) {
        (string memory username, string memory repository, ) = decode(attestation.data);
-        _prCount[repository][username] = _prCount[repository][username] < 1 ? 0 : _prCount[repository][username] - 1 ;
+        bytes32[] storage attestations = devAttestations[username][repository];
+        for(uint i = 0; i < attestations.length; i++) {
+            if(attestations[i] == attestation.uid) {
+                attestations[i] = attestations[attestations.length - 1];
+                attestations.pop();
+                break;
+            }
+        }
+        devAttestations[username][repository] = attestations;
         return true;
     }
 
-    function getPRCount(string memory repoName, string memory developer) public view returns (uint256) {
-        return _prCount[repoName][developer];
-    }
-
-    // Modifier -> Only contract owner can dispatch the function.
-    modifier onlyOwner {
-        if (msg.sender != _owner) revert NotOwner();
-        _;
+    function getPRCount(string memory repoName, string memory username) public view returns (uint256) {
+        return devAttestations[username][repoName].length;
     }
 }

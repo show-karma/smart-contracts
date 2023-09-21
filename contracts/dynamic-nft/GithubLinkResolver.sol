@@ -7,8 +7,8 @@ import {IEAS} from "@ethereum-attestation-service/eas-contracts/contracts/IEAS.s
 import {Attestation} from "@ethereum-attestation-service/eas-contracts/contracts/Common.sol";
 
 contract GithubLinkResolver is SchemaResolver {
-    mapping(string => address) public handleMap;
-    mapping(address => string) public reversedMap;
+    mapping(string => address) public handleToAddress;
+    mapping(address => string) public addressToHandle;
     address public owner;
 
     constructor(IEAS eas) SchemaResolver(eas) {
@@ -21,9 +21,9 @@ contract GithubLinkResolver is SchemaResolver {
     function decode(bytes memory data)
         public
         pure
-        returns (string memory githubUsername)
+        returns (string memory githubHandle)
     {
-        (githubUsername) = abi.decode(data, (string));
+        (githubHandle) = abi.decode(data, (string));
     }
 
     /**
@@ -33,9 +33,9 @@ contract GithubLinkResolver is SchemaResolver {
         Attestation calldata attestation,
         uint256 /*value*/
     ) internal override returns (bool) {
-        (string memory githubUsername) = decode(attestation.data);
-        handleMap[githubUsername] = attestation.recipient;
-        reversedMap[attestation.recipient] = githubUsername;
+        (string memory githubHandle) = decode(attestation.data);
+        handleToAddress[githubHandle] = attestation.recipient;
+        addressToHandle[attestation.recipient] = githubHandle;
         return true;
     }
 
@@ -46,18 +46,18 @@ contract GithubLinkResolver is SchemaResolver {
         Attestation calldata attestation,
         uint256 /*value*/
     ) internal override returns (bool) {
-        (string memory githubUsername) = decode(attestation.data);
-        delete handleMap[githubUsername]; // Use delete to clear the mapping entry
-        delete reversedMap[attestation.recipient]; 
+        (string memory githubHandle) = decode(attestation.data);
+        delete handleToAddress[githubHandle]; // Use delete to clear the mapping entry
+        delete addressToHandle[attestation.recipient]; 
         
         return true;
     }
 
-    function getAddressOfGithubAndCounter(string memory githubUsername) public view returns (address) {
-        return handleMap[githubUsername];
+    function getAddressOfGithubHandle(string memory githubHandle) public view returns (address) {
+        return handleToAddress[githubHandle];
     }
 
     function getUsernameOfAddress(address publicAddress) public view returns (string memory){
-        return reversedMap[publicAddress];
+        return addressToHandle[publicAddress];
     }
 }

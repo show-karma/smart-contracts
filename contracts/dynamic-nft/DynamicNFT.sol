@@ -5,10 +5,12 @@ import "base64-sol/base64.sol";
 import "./NFTRenderer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+
 contract DynamicNFT is ERC721URIStorage {
   uint256 public tokenId;
   NFTRenderer public nftRenderer;
   mapping(uint256 => string) public nftMetadata;
+  mapping(address => mapping(string => uint256)) public nftToOwner;
   address public _owner;
 
   constructor (string memory _name, string memory _symbol, address _nftRenderer) ERC721(_name, _symbol) {
@@ -21,6 +23,7 @@ contract DynamicNFT is ERC721URIStorage {
     tokenId += 1;
     _mint(receiver, tokenId);
     nftMetadata[tokenId] = metadata;
+    nftToOwner[receiver][metadata] = tokenId;
     _setTokenURI(tokenId, nftRenderer.formatTokenURI(receiver, metadata));
   }
 
@@ -28,4 +31,9 @@ contract DynamicNFT is ERC721URIStorage {
     address tokenOwner = ownerOf(id);
     return nftRenderer.formatTokenURI(tokenOwner, nftMetadata[id]);
   }
+
+  function getTokenIdByAddressAndMetadata(address owner, string memory metadata) public view returns (uint256) {
+    return nftToOwner[owner][metadata];
+  }
+
 }

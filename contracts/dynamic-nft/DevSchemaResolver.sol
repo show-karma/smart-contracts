@@ -10,8 +10,14 @@ import {Attestation} from "@ethereum-attestation-service/eas-contracts/contracts
 error NotOwner();
 
 contract DevSchemaResolver is SchemaResolver {
+
+    struct AttestationData {
+        bytes32 uid;
+        string prUrl;
+    }
+
     // username => repoName = attestation ids
-    mapping(string => mapping(string => bytes32[])) public devAttestations;
+    mapping(string => mapping(string => AttestationData[])) public devAttestations;
     address public _owner;
 
     constructor(IEAS eas) SchemaResolver(eas) {
@@ -24,10 +30,10 @@ contract DevSchemaResolver is SchemaResolver {
     function decode(bytes memory data)
         public
         pure
-        returns (string memory username, string memory repository, uint256 pullRequestCount)
+        returns (string memory username, string memory repository, string memory pullrequestUrl,  uint256 pullRequestCount)
     {
-        (username, repository, , , , pullRequestCount) = abi.decode(data, (string, string, string, string, string, uint256));
-        return (username, repository, pullRequestCount);
+        (username, repository, , , pullrequestUrl , pullRequestCount) = abi.decode(data, (string, string, string, string, string, uint256));
+        return (username, repository, pullrequestUrl, pullRequestCount);
     }
 
 
@@ -38,8 +44,12 @@ contract DevSchemaResolver is SchemaResolver {
         Attestation calldata attestation,
         uint256 /*value*/
     ) internal override returns (bool) {
-        (string memory username, string memory repository, uint256 pullRequestCount) = decode(attestation.data);
-        devAttestations[username][repository].push(attestation.uid);
+        (string memory username, string memory repository, string memory pullrequestUrl,) = decode(attestation.data);
+        AttestationData memory newAttestation = AttestationData({
+            uid: attestation.uid,
+            prUrl: pullrequestUrl
+        });
+        devAttestations[username][repository].push(newAttestation);
         return true;
     }
 
@@ -50,10 +60,10 @@ contract DevSchemaResolver is SchemaResolver {
         Attestation calldata attestation,
         uint256 /*value*/
     ) internal override returns (bool) {
-       (string memory username, string memory repository, ) = decode(attestation.data);
-        bytes32[] storage attestations = devAttestations[username][repository];
+       (string memory username, string memory repository, ,) = decode(attestation.data);
+        AttestationData[] storage attestations = devAttestations[username][repository];
         for(uint i = 0; i < attestations.length; i++) {
-            if(attestations[i] == attestation.uid) {
+            if(attestations[i].uid == attestation.uid) {
                 attestations[i] = attestations[attestations.length - 1];
                 attestations.pop();
                 break;
@@ -63,7 +73,7 @@ contract DevSchemaResolver is SchemaResolver {
         return true;
     }
 
-    function getPRCount(string memory repoName, string memory username) public view returns (uint256) {
-        return devAttestations[username][repoName].length;
+    function getUserAttestation(string memory repoName, string memory username) public view returns (AttestationData[] memory) {
+        return devAttestations[username][repoName];
     }
 }

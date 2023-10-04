@@ -94,7 +94,7 @@ contract DevNFTRenderer is NFTRenderer {
       string memory colorAux;
       bytes32 colorTypeHash = keccak256(bytes(colorType));
       uint256 preventPosition = position < 1 ? 1 : position;
-      string memory convertedPosition = Strings.toString((preventPosition * 50)); // Use Strings.toString() for integer to string conversion
+      string memory convertedPosition = Strings.toString((255 - (preventPosition * 50))); // Use Strings.toString() for integer to string conversion
 
       if (colorTypeHash == keccak256("green")) {
           colorAux = string(abi.encodePacked("0,", convertedPosition, ",0"));

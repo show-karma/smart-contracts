@@ -24,11 +24,11 @@ contract DevNFTRenderer is NFTRenderer {
   function formatTokenURI(address tokenOwner, string memory repository) public view returns (string memory) {
      (,  DevSchemaResolver.AttestationData[] memory attestations) = getAttestationCountAndData(tokenOwner, repository);
       string memory svgImageURI = imageURI(tokenOwner, repository);
-      string memory attributesJson = getAttributes(attestations); 
+      string memory attributesJson = ''; 
 
       string memory json = string(
         abi.encodePacked(
-          '{"name":"SVG NFT", "description":"Karma Reputation NFT!", "attributes":', attributesJson ,' , "image":"',
+          '{"name":"SVG NFT", "description":"Karma Reputation NFT!", "attributes":"" , "image":"',
           svgImageURI,
           '"}'
         )
@@ -41,11 +41,10 @@ contract DevNFTRenderer is NFTRenderer {
   function getAttributes(DevSchemaResolver.AttestationData[] memory attestations) private pure returns (string memory) {
     string memory attributesJson = '['; 
       for (uint256 i = 0; i < attestations.length; i++) {
-        string memory uidString = string(abi.encodePacked(attestations[i].uid));
 
         string memory attestationJson = string(
           abi.encodePacked(
-              '{"attestation_uid":"', uidString, '","pr_link":"', attestations[i].prUrl, '" }'
+              '{"attestation_uid":"', attestations[i].uid, '","pr_link":"', attestations[i].prUrl, '" }'
           )
         );
 
@@ -90,6 +89,7 @@ contract DevNFTRenderer is NFTRenderer {
     return completeSVG;
   }
 
+
   function getColor(string memory colorType, uint256 position) private pure returns (string memory color) {
       string memory colorAux;
       bytes32 colorTypeHash = keccak256(bytes(colorType));
@@ -97,7 +97,7 @@ contract DevNFTRenderer is NFTRenderer {
       string memory convertedPosition = Strings.toString((255 - (preventPosition * 50))); // Use Strings.toString() for integer to string conversion
 
       if (colorTypeHash == keccak256("green")) {
-          colorAux = string(abi.encodePacked("0,", convertedPosition, ",0"));
+          colorAux = ["250, 237, 237", "242, 237, 250", "237, 250, 240", "250, 237, 243"][preventPosition];
       } else if (colorTypeHash == keccak256("yellow")) {
           colorAux = string(abi.encodePacked("241,255,", convertedPosition));
       } else if (colorTypeHash == keccak256("white")) {
@@ -123,7 +123,7 @@ contract DevNFTRenderer is NFTRenderer {
 
  
   function generateBackground(uint256 prCount) public pure returns (string memory svg) {
-    string memory color = getColor("green", getPosition(prCount , 5));
+    string memory color = getColor("green", getPosition(prCount , 4));
      svg = string(
       abi.encodePacked('<rect width="1000" height="1000" fill="', color, '" />'));    
   }

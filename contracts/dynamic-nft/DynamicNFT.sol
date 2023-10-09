@@ -20,6 +20,7 @@ contract DynamicNFT is ERC721URIStorage {
   }
 
   function mintToken(address receiver, string memory metadata) public {
+    //XXX Add a check require(nftRenderer.isEligibleToMint(receiver, metadata), "User doesn't have any contributions");
     tokenId += 1;
     _mint(receiver, tokenId);
     nftMetadata[tokenId] = metadata;

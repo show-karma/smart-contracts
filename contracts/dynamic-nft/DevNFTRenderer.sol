@@ -21,6 +21,11 @@ contract DevNFTRenderer is NFTRenderer {
     _owner = msg.sender;
   }
   
+  function isEligibleToMint(address tokenOwner, string memory repository) public view returns (bool) {
+     (uint256 totalAttestations, ) = getAttestationCountAndData(tokenOwner, repository);
+     return (totalAttestations > 0);
+  }
+
   function formatTokenURI(address tokenOwner, string memory repository) public view returns (string memory) {
      (,  DevSchemaResolver.AttestationData[] memory attestations) = getAttestationCountAndData(tokenOwner, repository);
       string memory svgImageURI = imageURI(tokenOwner, repository);
@@ -59,18 +64,19 @@ contract DevNFTRenderer is NFTRenderer {
     return attributesJson;
   }
 
-  function getWalletInformation(address receiver) private view returns (string memory){
+  function getGithubUsername(address receiver) private view returns (string memory){
     return githubResolver.getUsernameOfAddress(receiver);
   }
 
   function getAttestationCountAndData(address tokenOwner, string memory repository) private view returns (uint256, DevSchemaResolver.AttestationData[] memory) {
-    string memory githubUsername = getWalletInformation(tokenOwner);
+    string memory githubUsername = getGithubUsername(tokenOwner);
+    //XXX add a check require(githubUsername != '');
     DevSchemaResolver.AttestationData[] memory attestations = schemaResolver.getUserAttestation(repository, githubUsername);
     return (attestations.length, attestations);
   }
 
   function imageURI(address tokenOwner, string memory repository) public view returns(string memory) {
-    string memory username = getWalletInformation(tokenOwner);
+    string memory username = getGithubUsername(tokenOwner);
     (uint256 prCount,) = getAttestationCountAndData(tokenOwner, repository);
     
     string memory background = generateBackground(prCount);

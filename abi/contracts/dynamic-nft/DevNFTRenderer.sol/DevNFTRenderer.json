@@ -37,8 +37,18 @@
       },
       {
         "internalType": "string",
+        "name": "nftName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
         "name": "repository",
         "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
     "name": "formatTokenURI",
@@ -50,6 +60,92 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "prCount",
+        "type": "uint256"
+      }
+    ],
+    "name": "generateAvatar",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "svg",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "prCount",
+        "type": "uint256"
+      }
+    ],
+    "name": "generateAvatarChain",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "svg",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "prCount",
+        "type": "uint256"
+      }
+    ],
+    "name": "generateBackground",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "svg",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "username",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "prCount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "repository",
+        "type": "string"
+      }
+    ],
+    "name": "generateCard",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "svg",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -90,6 +186,30 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "tokenOwner",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "repository",
+        "type": "string"
+      }
+    ],
+    "name": "isEligibleToMint",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "nftCounter",
     "outputs": [
@@ -97,25 +217,6 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "nftRepo",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
       }
     ],
     "stateMutability": "view",

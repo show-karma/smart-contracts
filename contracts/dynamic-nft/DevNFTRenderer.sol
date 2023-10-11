@@ -29,7 +29,6 @@ contract DevNFTRenderer is NFTRenderer {
      (,  DevSchemaResolver.AttestationData[] memory attestations) = getAttestationCountAndData(tokenOwner, repository);
       string memory contributor = getGithubUsername(tokenOwner);
       string memory svgImageURI = imageURI(tokenOwner, repository);
-      string memory attributesJson = ''; 
       string memory encodedNftName = string(abi.encodePacked(nftName, " #", Strings.toString(tokenId * 1)));
       string memory encodedDescription = string(abi.encodePacked("https://github.com/",repository, ": Contributions of ",  contributor, " - powered by Karma (www.karmahq.xyz)"));
 

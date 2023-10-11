@@ -16,7 +16,7 @@ contract DevSchemaResolver is SchemaResolver {
         string prUrl;
     }
 
-    // username => repoName = attestation ids
+    // username => repoName = attestation
     mapping(string => mapping(string => AttestationData[])) public devAttestations;
     address public _owner;
 

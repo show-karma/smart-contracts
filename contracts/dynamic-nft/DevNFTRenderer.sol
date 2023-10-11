@@ -7,7 +7,6 @@ import "./GithubLinkResolver.sol";
 import "./NFTRenderer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-
 contract DevNFTRenderer is NFTRenderer {
   uint256 public nftCounter;
   DevSchemaResolver public schemaResolver;
@@ -21,14 +20,22 @@ contract DevNFTRenderer is NFTRenderer {
     _owner = msg.sender;
   }
   
-  function formatTokenURI(address tokenOwner, string memory repository) public view returns (string memory) {
+  function isEligibleToMint(address tokenOwner, string memory repository) public view returns (bool) {
+    (uint256 totalAttestations, ) = getAttestationCountAndData(tokenOwner, repository);
+    return (totalAttestations > 0);
+  }
+
+  function formatTokenURI(address tokenOwner, string memory nftName, string memory repository, uint256 tokenId) public view returns (string memory) {
      (,  DevSchemaResolver.AttestationData[] memory attestations) = getAttestationCountAndData(tokenOwner, repository);
+      string memory contributor = getGithubUsername(tokenOwner);
       string memory svgImageURI = imageURI(tokenOwner, repository);
       string memory attributesJson = ''; 
+      string memory encodedNftName = string(abi.encodePacked(nftName, " #", Strings.toString(tokenId * 1)));
+      string memory encodedDescription = string(abi.encodePacked("https://github.com/",repository, ": Contributions of ",  contributor, " - powered by Karma (www.karmahq.xyz)"));
 
       string memory json = string(
         abi.encodePacked(
-          '{"name":"SVG NFT", "description":"Karma Reputation NFT!", "attributes":"" , "image":"',
+          '{"name":"',encodedNftName,'", "description":"',encodedDescription,'", "attributes":"" , "image":"',
           svgImageURI,
           '"}'
         )
@@ -59,18 +66,20 @@ contract DevNFTRenderer is NFTRenderer {
     return attributesJson;
   }
 
-  function getWalletInformation(address receiver) private view returns (string memory){
+  function getGithubUsername(address receiver) private view returns (string memory){
     return githubResolver.getUsernameOfAddress(receiver);
   }
 
+    
   function getAttestationCountAndData(address tokenOwner, string memory repository) private view returns (uint256, DevSchemaResolver.AttestationData[] memory) {
-    string memory githubUsername = getWalletInformation(tokenOwner);
-    DevSchemaResolver.AttestationData[] memory attestations = schemaResolver.getUserAttestation(repository, githubUsername);
-    return (attestations.length, attestations);
+      string memory githubUsername = getGithubUsername(tokenOwner);
+      DevSchemaResolver.AttestationData[] memory attestations = schemaResolver.getUserAttestation(repository, githubUsername);
+      require(bytes(githubUsername).length > 0, "User doesn't have any contributions");
+      return (attestations.length, attestations);
   }
 
   function imageURI(address tokenOwner, string memory repository) public view returns(string memory) {
-    string memory username = getWalletInformation(tokenOwner);
+    string memory username = getGithubUsername(tokenOwner);
     (uint256 prCount,) = getAttestationCountAndData(tokenOwner, repository);
     
     string memory background = generateBackground(prCount);
@@ -120,7 +129,6 @@ contract DevNFTRenderer is NFTRenderer {
       position = 3;
     }
   }
-
  
   function generateBackground(uint256 prCount) public pure returns (string memory svg) {
     string memory color = getColor("green", getPosition(prCount , 4));

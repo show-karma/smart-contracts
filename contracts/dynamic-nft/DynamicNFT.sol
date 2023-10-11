@@ -20,16 +20,17 @@ contract DynamicNFT is ERC721URIStorage {
   }
 
   function mintToken(address receiver, string memory metadata) public {
+    require(nftRenderer.isEligibleToMint(receiver, metadata), "User doesn't have any contributions");
     tokenId += 1;
     _mint(receiver, tokenId);
     nftMetadata[tokenId] = metadata;
     nftToOwner[receiver][metadata] = tokenId;
-    _setTokenURI(tokenId, nftRenderer.formatTokenURI(receiver, metadata));
+    _setTokenURI(tokenId, nftRenderer.formatTokenURI(receiver, name(), metadata, tokenId));
   }
 
   function tokenURI(uint256 id) public view override returns (string memory) {
     address tokenOwner = ownerOf(id);
-    return nftRenderer.formatTokenURI(tokenOwner, nftMetadata[id]);
+    return nftRenderer.formatTokenURI(tokenOwner, name(), nftMetadata[id], id);
   }
 
   function getTokenIdByAddressAndMetadata(address owner, string memory metadata) public view returns (uint256) {

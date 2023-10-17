@@ -19,7 +19,7 @@ contract DevNFTRenderer is NFTRenderer {
     githubResolver = GithubLinkResolver(_githubResolver);
     _owner = msg.sender;
   }
-  
+ 
   function isEligibleToMint(address tokenOwner, string memory repository) public view returns (bool) {
     (uint256 totalAttestations, ) = getAttestationCountAndData(tokenOwner, repository);
     return (totalAttestations > 0);

@@ -12,12 +12,14 @@ contract DevNFTRenderer is NFTRenderer {
   DevSchemaResolver public schemaResolver;
   GithubLinkResolver public githubResolver;
   address public _owner;
+  address public _attester;
 
-  constructor (address payable _schemaResolver, address payable _githubResolver) {
+  constructor (address payable _schemaResolver, address payable _githubResolver, address attester) {
     nftCounter = 0;
     schemaResolver = DevSchemaResolver(_schemaResolver);
     githubResolver = GithubLinkResolver(_githubResolver);
     _owner = msg.sender;
+    _attester = attester;
   }
  
   function isEligibleToMint(address tokenOwner, string memory repository) public view returns (bool) {
@@ -26,31 +28,42 @@ contract DevNFTRenderer is NFTRenderer {
   }
 
   function formatTokenURI(address tokenOwner, string memory nftName, string memory repository, uint256 tokenId) public view returns (string memory) {
-     (,  DevSchemaResolver.AttestationData[] memory attestations) = getAttestationCountAndData(tokenOwner, repository);
       string memory contributor = getGithubUsername(tokenOwner);
-      string memory svgImageURI = imageURI(tokenOwner, repository);
       string memory encodedNftName = string(abi.encodePacked(nftName, " #", Strings.toString(tokenId * 1)));
       string memory encodedDescription = string(abi.encodePacked("https://github.com/",repository, ": Contributions of ",  contributor, " - powered by Karma (www.karmahq.xyz)"));
+     
+      string memory image = Base64.encode(bytes(imageURI(tokenOwner, repository)));
 
-      string memory json = string(
-        abi.encodePacked(
-          '{"name":"',encodedNftName,'", "description":"',encodedDescription,'", "attributes":"" , "image":"',
-          svgImageURI,
-          '"}'
-        )
-      );
-
-      string memory base64EncodedJson = Base64.encode(bytes(json));
-      return string(abi.encodePacked("data:application/json;base64,", base64EncodedJson));
+      return
+          string(
+              abi.encodePacked(
+                  'data:application/json;base64,',
+                  Base64.encode(
+                      bytes(
+                          abi.encodePacked(
+                              '{"name":"',
+                              encodedNftName,
+                              '", "description":"',
+                              encodedDescription,
+                              '", "image": "',
+                              'data:image/svg+xml;base64,',
+                              image,
+                              '"}'
+                          )
+                      )
+                  )
+              )
+          );
   }
 
   function getAttributes(DevSchemaResolver.AttestationData[] memory attestations) private pure returns (string memory) {
     string memory attributesJson = '['; 
       for (uint256 i = 0; i < attestations.length; i++) {
+        string memory id = Strings.toHexString(uint256(attestations[i].uid), 32);
 
         string memory attestationJson = string(
           abi.encodePacked(
-              '{"attestation_uid":"', attestations[i].uid, '","pr_link":"', attestations[i].prUrl, '" }'
+              '{"attestation_uid":"', id, '","pr_link":"', attestations[i].prUrl, '" }'
           )
         );
 
@@ -65,6 +78,7 @@ contract DevNFTRenderer is NFTRenderer {
     return attributesJson;
   }
 
+
   function getGithubUsername(address receiver) private view returns (string memory){
     return githubResolver.getUsernameOfAddress(receiver);
   }
@@ -72,7 +86,7 @@ contract DevNFTRenderer is NFTRenderer {
     
   function getAttestationCountAndData(address tokenOwner, string memory repository) private view returns (uint256, DevSchemaResolver.AttestationData[] memory) {
       string memory githubUsername = getGithubUsername(tokenOwner);
-      DevSchemaResolver.AttestationData[] memory attestations = schemaResolver.getUserAttestation(repository, githubUsername);
+      DevSchemaResolver.AttestationData[] memory attestations = schemaResolver.getUserAttestation(repository, githubUsername, _attester);
       require(bytes(githubUsername).length > 0, "User doesn't have any contributions");
       return (attestations.length, attestations);
   }
@@ -87,7 +101,7 @@ contract DevNFTRenderer is NFTRenderer {
     string memory card = generateCard(username, prCount, repository);
 
     string memory completeSVG = string(abi.encodePacked(
-      'data:image/svg+xml;utf8, <svg width="1000" height="1000" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">',
+      '<svg width="1000" height="1000" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">',
       background,
       card,
       avatarChain,
@@ -96,7 +110,6 @@ contract DevNFTRenderer is NFTRenderer {
     ));
     return completeSVG;
   }
-
 
   function getColor(string memory colorType, uint256 position) private pure returns (string memory color) {
       string memory colorAux;

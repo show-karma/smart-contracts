@@ -7,6 +7,9 @@ import "./GithubLinkResolver.sol";
 import "./NFTRenderer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+address payable constant SCHEMA_RESOLVER = payable(0xEf00E7be55ff65Ad3F8305B042D44b96b05862D8);
+address payable constant GITHUB_RESOLVER = payable(0x6455E470f9Ecee5755930c9979b559768BF53170);
+
 contract DevNFTRenderer is NFTRenderer {
   uint256 public nftCounter;
   DevSchemaResolver public schemaResolver;
@@ -14,14 +17,14 @@ contract DevNFTRenderer is NFTRenderer {
   address public _owner;
   address public _attester;
 
-  constructor (address payable _schemaResolver, address payable _githubResolver, address attester) {
+  constructor (address attester) {
     nftCounter = 0;
-    schemaResolver = DevSchemaResolver(_schemaResolver);
-    githubResolver = GithubLinkResolver(_githubResolver);
+    schemaResolver = DevSchemaResolver(SCHEMA_RESOLVER);
+    githubResolver = GithubLinkResolver(GITHUB_RESOLVER);
     _owner = msg.sender;
     _attester = attester;
   }
- 
+  
   function isEligibleToMint(address tokenOwner, string memory repository) public view returns (bool) {
     (uint256 totalAttestations, ) = getAttestationCountAndData(tokenOwner, repository);
     return (totalAttestations > 0);
@@ -78,7 +81,6 @@ contract DevNFTRenderer is NFTRenderer {
     return attributesJson;
   }
 
-
   function getGithubUsername(address receiver) private view returns (string memory){
     return githubResolver.getUsernameOfAddress(receiver);
   }
@@ -86,7 +88,7 @@ contract DevNFTRenderer is NFTRenderer {
     
   function getAttestationCountAndData(address tokenOwner, string memory repository) private view returns (uint256, DevSchemaResolver.AttestationData[] memory) {
       string memory githubUsername = getGithubUsername(tokenOwner);
-      DevSchemaResolver.AttestationData[] memory attestations = schemaResolver.getUserAttestation(repository, githubUsername, _attester);
+      DevSchemaResolver.AttestationData[] memory attestations = schemaResolver.getUserAttestation(githubUsername, repository,  _attester);
       require(bytes(githubUsername).length > 0, "User doesn't have any contributions");
       return (attestations.length, attestations);
   }
@@ -110,6 +112,7 @@ contract DevNFTRenderer is NFTRenderer {
     ));
     return completeSVG;
   }
+
 
   function getColor(string memory colorType, uint256 position) private pure returns (string memory color) {
       string memory colorAux;

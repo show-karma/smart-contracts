@@ -25,7 +25,6 @@ contract DynamicNFT is ERC721URIStorage, Ownable {
     _mint(receiver, tokenId);
     nftMetadata[tokenId] = metadata;
     nftToOwner[receiver][metadata] = tokenId;
-    _setTokenURI(tokenId, nftRenderer.formatTokenURI(receiver, name(), metadata, tokenId));
   }
 
   function tokenURI(uint256 id) public view override returns (string memory) {

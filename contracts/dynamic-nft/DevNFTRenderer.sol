@@ -89,7 +89,7 @@ contract DevNFTRenderer is NFTRenderer {
   function getAttestationCountAndData(address tokenOwner, string memory repository) private view returns (uint256, DevSchemaResolver.AttestationData[] memory) {
       string memory githubUsername = getGithubUsername(tokenOwner);
       DevSchemaResolver.AttestationData[] memory attestations = schemaResolver.getUserAttestation(githubUsername, repository,  _attester);
-      require(bytes(githubUsername).length > 0, "User doesn't have any contributions");
+      require(attestations.length > 0, "User doesn't have any contributions");
       return (attestations.length, attestations);
   }
 

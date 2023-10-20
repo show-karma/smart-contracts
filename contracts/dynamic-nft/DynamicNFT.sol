@@ -4,9 +4,9 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "base64-sol/base64.sol";
 import "./NFTRenderer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-
-contract DynamicNFT is ERC721URIStorage {
+contract DynamicNFT is ERC721URIStorage, Ownable {
   uint256 public tokenId;
   NFTRenderer public nftRenderer;
   mapping(uint256 => string) public nftMetadata;
@@ -20,21 +20,23 @@ contract DynamicNFT is ERC721URIStorage {
   }
 
   function mintToken(address receiver, string memory metadata) public {
-    //XXX Add a check require(nftRenderer.isEligibleToMint(receiver, metadata), "User doesn't have any contributions");
+    require(nftRenderer.isEligibleToMint(receiver, metadata), "Not eligible to mint");
     tokenId += 1;
     _mint(receiver, tokenId);
     nftMetadata[tokenId] = metadata;
     nftToOwner[receiver][metadata] = tokenId;
-    _setTokenURI(tokenId, nftRenderer.formatTokenURI(receiver, metadata));
   }
 
   function tokenURI(uint256 id) public view override returns (string memory) {
     address tokenOwner = ownerOf(id);
-    return nftRenderer.formatTokenURI(tokenOwner, nftMetadata[id]);
+    return nftRenderer.formatTokenURI(tokenOwner, name(), nftMetadata[id], id);
   }
 
   function getTokenIdByAddressAndMetadata(address owner, string memory metadata) public view returns (uint256) {
     return nftToOwner[owner][metadata];
   }
 
+  function setNFTRenderer(address _nftRenderer) public onlyOwner {
+    nftRenderer = NFTRenderer(_nftRenderer);
+  }
 }

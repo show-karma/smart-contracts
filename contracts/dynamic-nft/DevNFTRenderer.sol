@@ -7,49 +7,66 @@ import "./GithubLinkResolver.sol";
 import "./NFTRenderer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+address payable constant SCHEMA_RESOLVER = payable(0xEf00E7be55ff65Ad3F8305B042D44b96b05862D8);
+address payable constant GITHUB_RESOLVER = payable(0x6455E470f9Ecee5755930c9979b559768BF53170);
 
 contract DevNFTRenderer is NFTRenderer {
   uint256 public nftCounter;
   DevSchemaResolver public schemaResolver;
   GithubLinkResolver public githubResolver;
   address public _owner;
+  address public _attester;
 
-  constructor (address payable _schemaResolver, address payable _githubResolver) {
+  constructor (address attester) {
     nftCounter = 0;
-    schemaResolver = DevSchemaResolver(_schemaResolver);
-    githubResolver = GithubLinkResolver(_githubResolver);
+    schemaResolver = DevSchemaResolver(SCHEMA_RESOLVER);
+    githubResolver = GithubLinkResolver(GITHUB_RESOLVER);
     _owner = msg.sender;
+    _attester = attester;
   }
   
   function isEligibleToMint(address tokenOwner, string memory repository) public view returns (bool) {
-     (uint256 totalAttestations, ) = getAttestationCountAndData(tokenOwner, repository);
-     return (totalAttestations > 0);
+    (uint256 totalAttestations, ) = getAttestationCountAndData(tokenOwner, repository);
+    return (totalAttestations > 0);
   }
 
-  function formatTokenURI(address tokenOwner, string memory repository) public view returns (string memory) {
-     (,  DevSchemaResolver.AttestationData[] memory attestations) = getAttestationCountAndData(tokenOwner, repository);
-      string memory svgImageURI = imageURI(tokenOwner, repository);
-      string memory attributesJson = ''; 
+  function formatTokenURI(address tokenOwner, string memory nftName, string memory repository, uint256 tokenId) public view returns (string memory) {
+      string memory contributor = getGithubUsername(tokenOwner);
+      string memory encodedNftName = string(abi.encodePacked(nftName, " #", Strings.toString(tokenId * 1)));
+      string memory encodedDescription = string(abi.encodePacked("https://github.com/",repository, ": Contributions of ",  contributor, " - powered by Karma (www.karmahq.xyz)"));
+     
+      string memory image = Base64.encode(bytes(imageURI(tokenOwner, repository)));
 
-      string memory json = string(
-        abi.encodePacked(
-          '{"name":"SVG NFT", "description":"Karma Reputation NFT!", "attributes":"" , "image":"',
-          svgImageURI,
-          '"}'
-        )
-      );
-
-      string memory base64EncodedJson = Base64.encode(bytes(json));
-      return string(abi.encodePacked("data:application/json;base64,", base64EncodedJson));
+      return
+          string(
+              abi.encodePacked(
+                  'data:application/json;base64,',
+                  Base64.encode(
+                      bytes(
+                          abi.encodePacked(
+                              '{"name":"',
+                              encodedNftName,
+                              '", "description":"',
+                              encodedDescription,
+                              '", "image": "',
+                              'data:image/svg+xml;base64,',
+                              image,
+                              '"}'
+                          )
+                      )
+                  )
+              )
+          );
   }
 
   function getAttributes(DevSchemaResolver.AttestationData[] memory attestations) private pure returns (string memory) {
     string memory attributesJson = '['; 
       for (uint256 i = 0; i < attestations.length; i++) {
+        string memory id = Strings.toHexString(uint256(attestations[i].uid), 32);
 
         string memory attestationJson = string(
           abi.encodePacked(
-              '{"attestation_uid":"', attestations[i].uid, '","pr_link":"', attestations[i].prUrl, '" }'
+              '{"attestation_uid":"', id, '","pr_link":"', attestations[i].prUrl, '" }'
           )
         );
 
@@ -68,11 +85,12 @@ contract DevNFTRenderer is NFTRenderer {
     return githubResolver.getUsernameOfAddress(receiver);
   }
 
+    
   function getAttestationCountAndData(address tokenOwner, string memory repository) private view returns (uint256, DevSchemaResolver.AttestationData[] memory) {
-    string memory githubUsername = getGithubUsername(tokenOwner);
-    //XXX add a check require(githubUsername != '');
-    DevSchemaResolver.AttestationData[] memory attestations = schemaResolver.getUserAttestation(repository, githubUsername);
-    return (attestations.length, attestations);
+      string memory githubUsername = getGithubUsername(tokenOwner);
+      DevSchemaResolver.AttestationData[] memory attestations = schemaResolver.getUserAttestation(githubUsername, repository,  _attester);
+      require(attestations.length > 0, "User doesn't have any contributions");
+      return (attestations.length, attestations);
   }
 
   function imageURI(address tokenOwner, string memory repository) public view returns(string memory) {
@@ -85,7 +103,7 @@ contract DevNFTRenderer is NFTRenderer {
     string memory card = generateCard(username, prCount, repository);
 
     string memory completeSVG = string(abi.encodePacked(
-      'data:image/svg+xml;utf8, <svg width="1000" height="1000" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">',
+      '<svg width="1000" height="1000" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">',
       background,
       card,
       avatarChain,
@@ -126,7 +144,6 @@ contract DevNFTRenderer is NFTRenderer {
       position = 3;
     }
   }
-
  
   function generateBackground(uint256 prCount) public pure returns (string memory svg) {
     string memory color = getColor("green", getPosition(prCount , 4));

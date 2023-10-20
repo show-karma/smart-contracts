@@ -6,6 +6,7 @@ import {SchemaResolver} from "@ethereum-attestation-service/eas-contracts/contra
 import {IEAS} from "@ethereum-attestation-service/eas-contracts/contracts/IEAS.sol";
 import {Attestation} from "@ethereum-attestation-service/eas-contracts/contracts/Common.sol";
 
+
 contract GithubLinkResolver is SchemaResolver {
     mapping(string => address) public handleToAddress;
     mapping(address => string) public addressToHandle;
@@ -14,6 +15,7 @@ contract GithubLinkResolver is SchemaResolver {
     constructor(IEAS eas) SchemaResolver(eas) {
         owner = msg.sender;
     }
+    
 
     /**
      * Decodes the schema

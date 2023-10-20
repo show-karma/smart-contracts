@@ -135,6 +135,11 @@
         "type": "string"
       },
       {
+        "internalType": "string",
+        "name": "pullrequestUrl",
+        "type": "string"
+      },
+      {
         "internalType": "uint256",
         "name": "pullRequestCount",
         "type": "uint256"
@@ -165,8 +170,13 @@
     "outputs": [
       {
         "internalType": "bytes32",
-        "name": "",
+        "name": "uid",
         "type": "bytes32"
+      },
+      {
+        "internalType": "string",
+        "name": "prUrl",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -185,12 +195,24 @@
         "type": "string"
       }
     ],
-    "name": "getPRCount",
+    "name": "getUserAttestation",
     "outputs": [
       {
-        "internalType": "uint256",
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "uid",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "string",
+            "name": "prUrl",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct DevSchemaResolver.AttestationData[]",
         "name": "",
-        "type": "uint256"
+        "type": "tuple[]"
       }
     ],
     "stateMutability": "view",

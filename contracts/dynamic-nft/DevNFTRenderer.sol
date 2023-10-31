@@ -8,7 +8,6 @@ import "./NFTRenderer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 address payable constant SCHEMA_RESOLVER = payable(0x63FD503800a89280EA1319c7B59E6aa419161aAB);
-// address payable constant SCHEMA_RESOLVER = payable(0xEf00E7be55ff65Ad3F8305B042D44b96b05862D8);
 address payable constant GITHUB_RESOLVER = payable(0x6455E470f9Ecee5755930c9979b559768BF53170);
 
 contract DevNFTRenderer is NFTRenderer {
@@ -27,12 +26,12 @@ contract DevNFTRenderer is NFTRenderer {
   }
   
   function isEligibleToMint(address tokenOwner, string memory repository) public view returns (bool) {
-    (uint256 totalAttestations,,,) = getAttestationInformations(tokenOwner, repository);
+    (uint256 totalAttestations,,,) = getAttestationInfo(tokenOwner, repository);
     return (totalAttestations > 0);
   }
 
   function formatTokenURI(address tokenOwner, string memory nftName, string memory repository, uint256 tokenId) public view returns (string memory) {
-     (,  DevSchemaResolver.AttestationData[] memory attestations,,) = getAttestationInformations(tokenOwner, repository);
+     (,  DevSchemaResolver.AttestationData[] memory attestations,,) = getAttestationInfo(tokenOwner, repository);
       string memory contributor = getGithubUsername(tokenOwner);
       string memory attributesJson = getAttributes(attestations); 
       string memory encodedNftName = string(abi.encodePacked(nftName, " #", Strings.toString(tokenId * 1)));
@@ -91,7 +90,7 @@ contract DevNFTRenderer is NFTRenderer {
   }
 
     
-  function getAttestationInformations(address tokenOwner, string memory repository) 
+  function getAttestationInfo(address tokenOwner, string memory repository) 
   private view 
   returns (uint256, DevSchemaResolver.AttestationData[] memory, uint256, uint256) {
       string memory githubUsername = getGithubUsername(tokenOwner);
@@ -102,7 +101,7 @@ contract DevNFTRenderer is NFTRenderer {
 
   function imageURI(address tokenOwner, string memory repository) public view returns(string memory) {
     string memory username = getGithubUsername(tokenOwner);
-    (uint256 prCount, ,uint256 additions, uint256 deletions) = getAttestationInformations(tokenOwner, repository);
+    (uint256 prCount, ,uint256 additions, uint256 deletions) = getAttestationInfo(tokenOwner, repository);
     
     string memory background = generateBackground(prCount);
     string memory avatar = generateAvatar(prCount);

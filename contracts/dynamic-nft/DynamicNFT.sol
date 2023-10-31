@@ -6,7 +6,8 @@ import "./NFTRenderer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract DynamicNFT is ERC721URIStorage, Ownable {
+
+contract DynamicNFT is ERC721URIStorage {
   uint256 public tokenId;
   NFTRenderer public nftRenderer;
   mapping(uint256 => string) public nftMetadata;
@@ -20,7 +21,7 @@ contract DynamicNFT is ERC721URIStorage, Ownable {
   }
 
   function mintToken(address receiver, string memory metadata) public {
-    require(nftRenderer.isEligibleToMint(receiver, metadata), "Not eligible to mint");
+    require(nftRenderer.isEligibleToMint(receiver, metadata), "User doesn't have any contributions");
     tokenId += 1;
     _mint(receiver, tokenId);
     nftMetadata[tokenId] = metadata;
@@ -36,7 +37,4 @@ contract DynamicNFT is ERC721URIStorage, Ownable {
     return nftToOwner[owner][metadata];
   }
 
-  function setNFTRenderer(address _nftRenderer) public onlyOwner {
-    nftRenderer = NFTRenderer(_nftRenderer);
-  }
 }

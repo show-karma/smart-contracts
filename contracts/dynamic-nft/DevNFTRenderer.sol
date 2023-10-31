@@ -7,7 +7,7 @@ import "./GithubLinkResolver.sol";
 import "./NFTRenderer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-address payable constant SCHEMA_RESOLVER = payable(0xEf00E7be55ff65Ad3F8305B042D44b96b05862D8);
+address payable constant SCHEMA_RESOLVER = payable(0x63FD503800a89280EA1319c7B59E6aa419161aAB);
 address payable constant GITHUB_RESOLVER = payable(0x6455E470f9Ecee5755930c9979b559768BF53170);
 
 contract DevNFTRenderer is NFTRenderer {
@@ -26,12 +26,14 @@ contract DevNFTRenderer is NFTRenderer {
   }
   
   function isEligibleToMint(address tokenOwner, string memory repository) public view returns (bool) {
-    (uint256 totalAttestations, ) = getAttestationCountAndData(tokenOwner, repository);
+    (uint256 totalAttestations,,,) = getAttestationInfo(tokenOwner, repository);
     return (totalAttestations > 0);
   }
 
   function formatTokenURI(address tokenOwner, string memory nftName, string memory repository, uint256 tokenId) public view returns (string memory) {
+     (,  DevSchemaResolver.AttestationData[] memory attestations,,) = getAttestationInfo(tokenOwner, repository);
       string memory contributor = getGithubUsername(tokenOwner);
+      string memory attributesJson = getAttributes(attestations); 
       string memory encodedNftName = string(abi.encodePacked(nftName, " #", Strings.toString(tokenId * 1)));
       string memory encodedDescription = string(abi.encodePacked("https://github.com/",repository, ": Contributions of ",  contributor, " - powered by Karma (www.karmahq.xyz)"));
      
@@ -48,6 +50,8 @@ contract DevNFTRenderer is NFTRenderer {
                               encodedNftName,
                               '", "description":"',
                               encodedDescription,
+                              '","attributes":"',
+                              attributesJson,
                               '", "image": "',
                               'data:image/svg+xml;base64,',
                               image,
@@ -86,21 +90,23 @@ contract DevNFTRenderer is NFTRenderer {
   }
 
     
-  function getAttestationCountAndData(address tokenOwner, string memory repository) private view returns (uint256, DevSchemaResolver.AttestationData[] memory) {
+  function getAttestationInfo(address tokenOwner, string memory repository) 
+  private view 
+  returns (uint256, DevSchemaResolver.AttestationData[] memory, uint256, uint256) {
       string memory githubUsername = getGithubUsername(tokenOwner);
-      DevSchemaResolver.AttestationData[] memory attestations = schemaResolver.getUserAttestation(githubUsername, repository,  _attester);
-      require(attestations.length > 0, "User doesn't have any contributions");
-      return (attestations.length, attestations);
+      DevSchemaResolver.AttestationInfo memory userAttestations = schemaResolver.getUserAttestationInformation(githubUsername, repository,  _attester);
+      require(userAttestations.attestations.length > 0, "User doesn't have any contributions");
+      return (userAttestations.attestations.length, userAttestations.attestations, userAttestations.additions, userAttestations.deletions);
   }
 
   function imageURI(address tokenOwner, string memory repository) public view returns(string memory) {
     string memory username = getGithubUsername(tokenOwner);
-    (uint256 prCount,) = getAttestationCountAndData(tokenOwner, repository);
+    (uint256 prCount, ,uint256 additions, uint256 deletions) = getAttestationInfo(tokenOwner, repository);
     
     string memory background = generateBackground(prCount);
     string memory avatar = generateAvatar(prCount);
     string memory avatarChain = generateAvatarChain(prCount);
-    string memory card = generateCard(username, prCount, repository);
+    string memory card = generateCard(username, prCount, repository, additions, deletions);
 
     string memory completeSVG = string(abi.encodePacked(
       '<svg width="1000" height="1000" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">',
@@ -154,9 +160,13 @@ contract DevNFTRenderer is NFTRenderer {
   function generateCard(
     string memory username,
     uint256 prCount,
-    string memory repository
+    string memory repository,
+    uint256 additions,
+    uint256 deletions
   ) public pure returns (string memory svg) {
   string memory convertedPrCount = Strings.toString(prCount * 1);
+  string memory convertedAdditions = Strings.toString(additions * 1);
+  string memory convertedDeletions = Strings.toString(deletions * 1);
   
   svg = string(
     abi.encodePacked(
@@ -165,6 +175,8 @@ contract DevNFTRenderer is NFTRenderer {
       '<tspan dx="60" dy="15">Contributor:</tspan><tspan dx="20" fill="rgb(246,112,199)">', username ,'</tspan>',
       '<tspan x="255" dy="45">Total no. of PRs:</tspan> <tspan dx="20" fill="rgb(153,246,224)">', convertedPrCount ,'</tspan>',
       '<tspan x="325" dy="45">Repository:</tspan><tspan dx="20" fill="rgb(221,214,254)">', repository ,'</tspan>', 
+      '<tspan x="290" dy="45">Lines Added:</tspan><tspan fill="rgb(35, 134, 54)">', convertedAdditions ,'</tspan>',
+      '<tspan dx="50"> Lines Removed:</tspan><tspan fill="rgb(218, 54, 51)">', convertedDeletions ,'</tspan>',
       '</text>'
       )
     );
@@ -237,5 +249,4 @@ contract DevNFTRenderer is NFTRenderer {
       )
     ); 
   }
-
 } 

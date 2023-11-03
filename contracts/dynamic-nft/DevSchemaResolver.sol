@@ -68,6 +68,10 @@ contract DevSchemaResolver is SchemaResolver {
         return true;
     }
 
+    function userHaveAttestations(string memory _username, string memory _repository, address _attester) public view returns(bool) {
+        return devAttestations[_attester][_username][_repository].length > 0;
+    }
+
     function getUserAttestationInformation(string memory _username, string memory _repository, address _attester) 
     public view
     returns (AttestationInfo memory) {

@@ -6,7 +6,6 @@ import "./NFTRenderer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-
 contract DynamicNFT is ERC721URIStorage {
   uint256 public tokenId;
   NFTRenderer public nftRenderer;

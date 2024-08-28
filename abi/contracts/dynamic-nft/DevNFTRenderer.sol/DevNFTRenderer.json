@@ -2,18 +2,26 @@
   {
     "inputs": [
       {
-        "internalType": "address payable",
-        "name": "_schemaResolver",
-        "type": "address"
-      },
-      {
-        "internalType": "address payable",
-        "name": "_githubResolver",
+        "internalType": "address",
+        "name": "attester",
         "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "_attester",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -135,6 +143,16 @@
         "internalType": "string",
         "name": "repository",
         "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "additions",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deletions",
+        "type": "uint256"
       }
     ],
     "name": "generateCard",

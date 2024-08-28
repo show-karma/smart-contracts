@@ -7,13 +7,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
     const {deployer} = await getNamedAccounts();
 
-    await deploy('DevNFTRenderer', {
+    await deploy('NFTMinter', {
         from: deployer,
         log: true,
         autoMine: true,
-        args: ["0x8f16aD3e4F871c820FD3AB9C919bf93A30DA6d17", "0x6455E470f9Ecee5755930c9979b559768BF53170"]
+        args: ["Karma", "KRM"]
     });
 };
 export default func;
-func.tags = ['DevNFTRenderer']
+func.tags = ['NFTMinter']
 

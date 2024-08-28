@@ -11,7 +11,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         from: deployer,
         log: true,
         autoMine: true,
-        args: ['KARMADEV', 'Karma Dev Reputation', "0xAAc8f41BC1d080B6a64b4a23348dF963Ace17E78"]
+        args: ['KARMADEV', 'Karma Dev Reputation', "0x84d2De05B84a0663680566928974eE31d9F4ab41"]
     });
 };
 export default func;

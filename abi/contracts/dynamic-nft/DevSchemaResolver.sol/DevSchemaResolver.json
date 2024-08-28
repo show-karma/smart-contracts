@@ -141,7 +141,12 @@
       },
       {
         "internalType": "uint256",
-        "name": "pullRequestCount",
+        "name": "additions",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deletions",
         "type": "uint256"
       }
     ],
@@ -150,6 +155,11 @@
   },
   {
     "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
       {
         "internalType": "string",
         "name": "",
@@ -170,13 +180,8 @@
     "outputs": [
       {
         "internalType": "bytes32",
-        "name": "uid",
+        "name": "",
         "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "prUrl",
-        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -186,33 +191,55 @@
     "inputs": [
       {
         "internalType": "string",
-        "name": "repoName",
+        "name": "_username",
         "type": "string"
       },
       {
         "internalType": "string",
-        "name": "username",
+        "name": "_repository",
         "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "_attester",
+        "type": "address"
       }
     ],
-    "name": "getUserAttestation",
+    "name": "getUserAttestationInformation",
     "outputs": [
       {
         "components": [
           {
-            "internalType": "bytes32",
-            "name": "uid",
-            "type": "bytes32"
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "uid",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "prUrl",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct DevSchemaResolver.AttestationData[]",
+            "name": "attestations",
+            "type": "tuple[]"
           },
           {
-            "internalType": "string",
-            "name": "prUrl",
-            "type": "string"
+            "internalType": "uint256",
+            "name": "additions",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deletions",
+            "type": "uint256"
           }
         ],
-        "internalType": "struct DevSchemaResolver.AttestationData[]",
+        "internalType": "struct DevSchemaResolver.AttestationInfo",
         "name": "",
-        "type": "tuple[]"
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",

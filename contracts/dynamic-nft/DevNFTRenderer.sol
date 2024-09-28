@@ -7,7 +7,7 @@ import "./GithubLinkResolver.sol";
 import "./NFTRenderer.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-address payable constant SCHEMA_RESOLVER = payable(0x63FD503800a89280EA1319c7B59E6aa419161aAB);
+address payable constant SCHEMA_RESOLVER = payable(0xa1FCf93a451de8De96B6083088648fe0DDAb6707);
 address payable constant GITHUB_RESOLVER = payable(0x6455E470f9Ecee5755930c9979b559768BF53170);
 
 contract DevNFTRenderer is NFTRenderer {
@@ -26,8 +26,10 @@ contract DevNFTRenderer is NFTRenderer {
   }
   
   function isEligibleToMint(address tokenOwner, string memory repository) public view returns (bool) {
-    (uint256 totalAttestations,,,) = getAttestationInfo(tokenOwner, repository);
-    return (totalAttestations > 0);
+    string memory githubUsername = getGithubUsername(tokenOwner);
+    bool isElegible = schemaResolver.userHaveAttestations(githubUsername, repository,  _attester);
+    require(isElegible, "User doesn't have any contributions");
+    return isElegible;
   }
 
   function formatTokenURI(address tokenOwner, string memory nftName, string memory repository, uint256 tokenId) public view returns (string memory) {
